@@ -21,27 +21,154 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            [
-                                                {
-                                                    'connected': true,
-                                                    'events': 'All',
-                                                    'expiration': 0,
-                                                    'id': 'bec45bb93cbd24cbec32941ec3c93a12',
-                                                    'jid': '5491155551122:12@s.whatsapp.net',
-                                                    'loggedIn': true,
-                                                    'name': 'Some User',
-                                                    'proxy_url': '',
-                                                    'qrcode': '',
-                                                    'token': 'd030sl9aDL39sl3075zz',
-                                                    'webhook': 'https://some.domain/webhook',
-                                                },
-                                            ],
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/User'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        [
+                                            {
+                                                'connected': true,
+                                                'events': 'All',
+                                                'expiration': 0,
+                                                'id': 'bec45bb93cbd24cbec32941ec3c93a12',
+                                                'jid': '5491155551122:12@s.whatsapp.net',
+                                                'loggedIn': true,
+                                                'name': 'Some User',
+                                                'proxy_url': '',
+                                                'qrcode': '',
+                                                'token': 'd030sl9aDL39sl3075zz',
+                                                'webhook': 'https://some.domain/webhook',
+                                            },
+                                        ],
+                                    'success': true,
+                                }
+    /admin/users/{id}:
+        get:
+            tags:
+                - Admin
+            summary: Get user by ID
+            description: Retrieve a specific user by their ID from the database.
+            security:
+                - AdminAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the user to retrieve
+                  schema:
+                      type: string
+                      example: 4e4942c7dee1deef99ab8fd9f7350de5
+            responses:
+                '200':
+                    description: User retrieved successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                            example:
+                                code: 200
+                                success: true
+                                data:
+                                    id: '4e4942c7dee1deef99ab8fd9f7350de5'
+                                    name: 'John Doe'
+                                    token: '1234ABCD'
+                                    webhook: 'https://webhook.site/1234567890'
+                                    events: 'All'
+                                    expiration: 0
+                                    proxy_config:
+                                        enabled: true
+                                        proxy_url: 'https://serverproxy.com:9080'
+                                    s3_config:
+                                        enabled: true
+                                        endpoint: 'https://s3.amazonaws.com'
+                                        region: 'us-east-1'
+                                        bucket: 'my-bucket'
+                                        access_key: '***'
+                                        path_style: true
+                                        public_url: 'https://s3.amazonaws.com'
+                                        media_delivery: 'both'
+                                        retention_days: 30
+        put:
+            tags:
+                - Admin
+            summary: Update user
+            description: Update an existing user in the database.
+            security:
+                - AdminAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  description: ID of the user to update
+                  schema:
+                      type: string
+                      example: 4e4942c7dee1deef99ab8fd9f7350de5
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateUser'
+            responses:
+                '200':
+                    description: User updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                            example:
+                                code: 200
+                                success: true
+                                data:
+                                    id: '4e4942c7dee1deef99ab8fd9f7350de5'
+                                    name: 'John Doe Updated'
+                                    token: '1234ABCD'
+                                    webhook: 'https://webhook.site/1234567890'
+                                    events: 'All'
+                                    expiration: 0
+                                    proxy_config:
+                                        enabled: true
+                                        proxy_url: 'https://serverproxy.com:9080'
+                                    s3_config:
+                                        enabled: true
+                                        endpoint: 'https://s3.amazonaws.com'
+                                        region: 'us-east-1'
+                                        bucket: 'my-bucket'
+                                        access_key: '***'
+                                        path_style: true
+                                        public_url: 'https://s3.amazonaws.com'
+                                        media_delivery: 'both'
+                                        retention_days: 30
         post:
             tags:
                 - Admin
@@ -61,30 +188,39 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: '#/components/schemas/User'
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 201
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        $ref: '#/components/schemas/User'
                             example:
                                 code: 201
+                                success: true
                                 data:
-                                    id: '5663e0c52063ec35d0ba45f7c2011c06'
-                                    name: 'John Doe'
-                                    token: '1234ABCD'
-                                    webhook: 'https://webhook.site/1234567890'
+                                    id: '80afffa8affabe8718f7c1863507cf9e'
+                                    name: 'Clasta Dev'
+                                    token: '3WftyVpmfy4VJphrbZiuAN'
+                                    webhook: ''
                                     events: 'All'
+                                    expiration: 0
                                     proxy_config:
-                                        enabled: true
-                                        proxy_url: 'https://serverproxy.com:9080'
+                                        enabled: false
+                                        proxy_url: ''
                                     s3_config:
-                                        enabled: true
-                                        endpoint: 'https://s3.amazonaws.com'
-                                        region: 'us-east-1'
-                                        bucket: 'my-bucket'
-                                        access_key: '***'
-                                        path_style: true
-                                        public_url: 'https://s3.amazonaws.com'
+                                        enabled: false
+                                        endpoint: ''
+                                        region: ''
+                                        bucket: ''
+                                        access_key: ''
+                                        path_style: false
+                                        public_url: ''
                                         media_delivery: 'both'
                                         retention_days: 30
-                                    history: 0
-    /admin/users/{id}:
         delete:
             tags:
                 - Admin
@@ -253,17 +389,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'subscribe':
-                                                    ['Message', 'ReadReceipt'],
-                                                'webhook': 'https://example.net/webhook',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            subscribe:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                example:
+                                                    ['Message', 'ReadReceipt']
+                                            webhook:
+                                                type: string
+                                                example: 'https://example.net/webhook'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'subscribe':
+                                                ['Message', 'ReadReceipt'],
+                                            'webhook': 'https://example.net/webhook',
+                                        },
+                                    'success': true,
+                                }
 
         post:
             tags:
@@ -296,17 +452,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'WebhookURL': 'https://example.net/webhook',
-                                                'Events':
-                                                    ['Message', 'ReadReceipt'],
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            WebhookURL:
+                                                type: string
+                                                example: 'https://example.net/webhook'
+                                            Events:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                example:
+                                                    ['Message', 'ReadReceipt']
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'WebhookURL': 'https://example.net/webhook',
+                                            'Events':
+                                                ['Message', 'ReadReceipt'],
+                                        },
+                                    'success': true,
+                                }
         delete:
             tags:
                 - Webhook
@@ -320,15 +496,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Webhook and events deleted successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Webhook and events deleted successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Webhook and events deleted successfully',
+                                        },
+                                    'success': true,
+                                }
         put:
             tags:
                 - Webhook
@@ -360,18 +550,41 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'WebhookURL': 'https://example.net/webhook',
-                                                'Events':
-                                                    ['Message', 'ReadReceipt'],
-                                                'active': true,
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            WebhookURL:
+                                                type: string
+                                                example: 'https://example.net/webhook'
+                                            Events:
+                                                type: array
+                                                items:
+                                                    type: string
+                                                example:
+                                                    ['Message', 'ReadReceipt']
+                                            active:
+                                                type: boolean
+                                                example: true
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'WebhookURL': 'https://example.net/webhook',
+                                            'Events':
+                                                ['Message', 'ReadReceipt'],
+                                            'active': true,
+                                        },
+                                    'success': true,
+                                }
     /session/connect:
         post:
             tags:
@@ -394,18 +607,41 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'details': 'Connected!',
-                                                'events': 'Message',
-                                                'jid': '5491155555555.0:53@s.whatsapp.net',
-                                                'webhook': 'https://some.site/webhook?request=parameter',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            details:
+                                                type: string
+                                                example: 'Connected!'
+                                            events:
+                                                type: string
+                                                example: 'Message'
+                                            jid:
+                                                type: string
+                                                example: '5491155555555.0:53@s.whatsapp.net'
+                                            webhook:
+                                                type: string
+                                                example: 'https://some.site/webhook?request=parameter'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'details': 'Connected!',
+                                            'events': 'Message',
+                                            'jid': '5491155555555.0:53@s.whatsapp.net',
+                                            'webhook': 'https://some.site/webhook?request=parameter',
+                                        },
+                                    'success': true,
+                                }
     /session/disconnect:
         post:
             tags:
@@ -420,12 +656,26 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data': { 'Details': 'Disconnected' },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Disconnected'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data': { 'Details': 'Disconnected' },
+                                    'success': true,
+                                }
     /session/logout:
         post:
             tags:
@@ -440,12 +690,26 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data': { 'Details': 'Logged out' },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Logged out'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data': { 'Details': 'Logged out' },
+                                    'success': true,
+                                }
     /session/status:
         get:
             tags:
@@ -460,16 +724,30 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Connected': true,
-                                                'LoggedIn': true,
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Connected:
+                                                type: boolean
+                                                example: true
+                                            LoggedIn:
+                                                type: boolean
+                                                example: true
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        { 'Connected': true, 'LoggedIn': true },
+                                    'success': true,
+                                }
     /session/pairphone:
         post:
             tags:
@@ -490,12 +768,26 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data': { 'LinkingCode': '9H3J-H3J8' },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            LinkingCode:
+                                                type: string
+                                                example: '9H3J-H3J8'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data': { 'LinkingCode': '9H3J-H3J8' },
+                                    'success': true,
+                                }
     /session/qr:
         get:
             tags:
@@ -510,15 +802,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'QRCode': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEw0lEQVR42uyZPa7zqhaGX0ThLmsCkZlGCktMKaU76FxmSkgUmQZWJkA6CuT3avlLvrNvvRMX9x6KXWQ/UhCsn2cR/Lv+v5YhudQ6njEs1bBjqGYDwlJJpoOAArtUbK4Pi5jN3qPAlCkstcAeBazMUaoj78RpxGW4yWYzWVfmzwFLlLX4O+VkkucN5tFDOxiIAvfoA/X4uVQ4sgUcCBTYCG7AEGGKvbdrBabQ8OOyvg3ovm4ynqfLXJ9rvi+303ie5vm/gvZXgK6BLC7fo5hiG4KwW7b6I/2+DJi1+ybVFQyx6o6bbKPVDCyjTwcBZB9uevBtAEafhiosCFH/4kNA8i1gg02B3KxezGbzEjUCDgIwYppR3SNdgtY3H0M1j8xFzCscvg/8uQvZAB9piidv1RXfZhbHdAwAlzsCNCaJDdMF4WQeeSGACZ8BMNl4FZYJA7j2YalPPhhngetHAaZPcyBg2wyYdAk0fKQ5yPja5PcBzTZW4uxJ2bTGwmxnu/BH4vwSgEsYItcCH+VZJt/AYhmHatbXdX8d2JvaTVzxCVW2aVhqheXSqvnR9b4L6AoUx3zX+jZd5rDB5jbLuv0txd8GRs+liuv+TsKloQWujxxRYf5s8gOA7fMVK9PQuDtMNCx2ibIdCMCy1s0yQU6Od9bqim1BuzoOAgzTHOiKv0d5Mt+XClN8DBxN/wxg2G2DbDYNJExCqE+Ne8poXoLxdUA/w5VrnxBQ9fjlqaJMwWgPAzLjtfKRW4A21ojnStX0dX2d5PeB0fawu2pChcuM4bk+tLmbMn0GMJslb5ptDXySbb5W1+0SyVcJOgRIQxSc7X0RUSvGs2DSeaz4gwCMNi/7XNACZc0KbPBtruv2KQA+DVFladBvt4xywhmh1Xd2fx8wzGTUltqCWrHWgqL7Jg8E0hSiFJfbUJ/Fpx3L1OHsVR8+APgoZMclUKvcft2+zTBrwjHArosim4ZcfW4Y4lVWnYXg2A8C9C5aEFXDoEJzmXFyfZoH/p0Wvw7oXoZbNQ823ase1wk2DQ3u7XK/BkzOqovwpM68Ko+jUyPFu6F8H4DvqsAuaUMZJ6+azjTPdS32KMBkLnpQ3VPnbsZgiktALW91/wDQEV5V7gT4JT6L62GRzeV0EDDC7rVFax2ZW6Aa6V5h/FEAgBlSbLrMVScU1s09+jxwG/9q87cB/Yxw3acBsk2Yw+nPf9Y1p88ARlNPtvPkF3LlPQYp8MtSx/FtpF8H4DNrZd8fOtTOxJSzXdo/c/fXAbN2DLeKs1dxHeEZZVWaju/3h18CcDk3qePZpllglDZ89MCq8nIQoDPAVaPi3iAFFwS1xjjr+HcYwD+hri216vBZzQbbZsE44RhAp+sQxfTpApGCoV1NOfsl4pX+nwC65a1uLnkK9TSuVTOhaQ4cBOzvtDcZXU5Bdl28SrF9HqrZJhwD7O/VsZpi7xSz7pXW6ahQ1/dB/RrYf2QhLBmr1lNINVRZfw9BBwArc4SszGlWWd2fxB9cFvJQYKnUUWAgV22y5v1e/ffHpiOAqMLCiOpymwNGtxvk9s8mfwcU2CiydqvJbdKuSX0K8a/KHQDsMQkyeVbtISFif8mRcfwRtF8F/l3/O+s/AQAA///lM0dZSaTeTQAAAABJRU5ErkJggg==',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            QRCode:
+                                                type: string
+                                                example: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEw0lEQVR42uyZPa7zqhaGX0ThLmsCkZlGCktMKaU76FxmSkgUmQZWJkA6CuT3avlLvrNvvRMX9x6KXWQ/UhCsn2cR/Lv+v5YhudQ6njEs1bBjqGYDwlJJpoOAArtUbK4Pi5jN3qPAlCkstcAeBazMUaoj78RpxGW4yWYzWVfmzwFLlLX4O+VkkucN5tFDOxiIAvfoA/X4uVQ4sgUcCBTYCG7AEGGKvbdrBabQ8OOyvg3ovm4ynqfLXJ9rvi+303ie5vm/gvZXgK6BLC7fo5hiG4KwW7b6I/2+DJi1+ybVFQyx6o6bbKPVDCyjTwcBZB9uevBtAEafhiosCFH/4kNA8i1gg02B3KxezGbzEjUCDgIwYppR3SNdgtY3H0M1j8xFzCscvg/8uQvZAB9piidv1RXfZhbHdAwAlzsCNCaJDdMF4WQeeSGACZ8BMNl4FZYJA7j2YalPPhhngetHAaZPcyBg2wyYdAk0fKQ5yPja5PcBzTZW4uxJ2bTGwmxnu/BH4vwSgEsYItcCH+VZJt/AYhmHatbXdX8d2JvaTVzxCVW2aVhqheXSqvnR9b4L6AoUx3zX+jZd5rDB5jbLuv0txd8GRs+liuv+TsKloQWujxxRYf5s8gOA7fMVK9PQuDtMNCx2ibIdCMCy1s0yQU6Od9bqim1BuzoOAgzTHOiKv0d5Mt+XClN8DBxN/wxg2G2DbDYNJExCqE+Ne8poXoLxdUA/w5VrnxBQ9fjlqaJMwWgPAzLjtfKRW4A21ojnStX0dX2d5PeB0fawu2pChcuM4bk+tLmbMn0GMJslb5ptDXySbb5W1+0SyVcJOgRIQxSc7X0RUSvGs2DSeaz4gwCMNi/7XNACZc0KbPBtruv2KQA+DVFladBvt4xywhmh1Xd2fx8wzGTUltqCWrHWgqL7Jg8E0hSiFJfbUJ/Fpx3L1OHsVR8+APgoZMclUKvcft2+zTBrwjHArosim4ZcfW4Y4lVWnYXg2A8C9C5aEFXDoEJzmXFyfZoH/p0Wvw7oXoZbNQ823ase1wk2DQ3u7XK/BkzOqovwpM68Ko+jUyPFu6F8H4DvqsAuaUMZJ6+azjTPdS32KMBkLnpQ3VPnbsZgiktALW91/wDQEV5V7gT4JT6L62GRzeV0EDDC7rVFax2ZW6Aa6V5h/FEAgBlSbLrMVScU1s09+jxwG/9q87cB/Yxw3acBsk2Yw+nPf9Y1p88ARlNPtvPkF3LlPQYp8MtSx/FtpF8H4DNrZd8fOtTOxJSzXdo/c/fXAbN2DLeKs1dxHeEZZVWaju/3h18CcDk3qePZpllglDZ89MCq8nIQoDPAVaPi3iAFFwS1xjjr+HcYwD+hri216vBZzQbbZsE44RhAp+sQxfTpApGCoV1NOfsl4pX+nwC65a1uLnkK9TSuVTOhaQ4cBOzvtDcZXU5Bdl28SrF9HqrZJhwD7O/VsZpi7xSz7pXW6ahQ1/dB/RrYf2QhLBmr1lNINVRZfw9BBwArc4SszGlWWd2fxB9cFvJQYKnUUWAgV22y5v1e/ffHpiOAqMLCiOpymwNGtxvk9s8mfwcU2CiydqvJbdKuSX0K8a/KHQDsMQkyeVbtISFif8mRcfwRtF8F/l3/O+s/AQAA///lM0dZSaTeTQAAAABJRU5ErkJggg=='
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'QRCode': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEw0lEQVR42uyZPa7zqhaGX0ThLmsCkZlGCktMKaU76FxmSkgUmQZWJkA6CuT3avlLvrNvvRMX9x6KXWQ/UhCsn2cR/Lv+v5YhudQ6njEs1bBjqGYDwlJJpoOAArtUbK4Pi5jN3qPAlCkstcAeBazMUaoj78RpxGW4yWYzWVfmzwFLlLX4O+VkkucN5tFDOxiIAvfoA/X4uVQ4sgUcCBTYCG7AEGGKvbdrBabQ8OOyvg3ovm4ynqfLXJ9rvi+303ie5vm/gvZXgK6BLC7fo5hiG4KwW7b6I/2+DJi1+ybVFQyx6o6bbKPVDCyjTwcBZB9uevBtAEafhiosCFH/4kNA8i1gg02B3KxezGbzEjUCDgIwYppR3SNdgtY3H0M1j8xFzCscvg/8uQvZAB9piidv1RXfZhbHdAwAlzsCNCaJDdMF4WQeeSGACZ8BMNl4FZYJA7j2YalPPhhngetHAaZPcyBg2wyYdAk0fKQ5yPja5PcBzTZW4uxJ2bTGwmxnu/BH4vwSgEsYItcCH+VZJt/AYhmHatbXdX8d2JvaTVzxCVW2aVhqheXSqvnR9b4L6AoUx3zX+jZd5rDB5jbLuv0txd8GRs+liuv+TsKloQWujxxRYf5s8gOA7fMVK9PQuDtMNCx2ibIdCMCy1s0yQU6Od9bqim1BuzoOAgzTHOiKv0d5Mt+XClN8DBxN/wxg2G2DbDYNJExCqE+Ne8poXoLxdUA/w5VrnxBQ9fjlqaJMwWgPAzLjtfKRW4A21ojnStX0dX2d5PeB0fawu2pChcuM4bk+tLmbMn0GMJslb5ptDXySbb5W1+0SyVcJOgRIQxSc7X0RUSvGs2DSeaz4gwCMNi/7XNACZc0KbPBtruv2KQA+DVFladBvt4xywhmh1Xd2fx8wzGTUltqCWrHWgqL7Jg8E0hSiFJfbUJ/Fpx3L1OHsVR8+APgoZMclUKvcft2+zTBrwjHArosim4ZcfW4Y4lVWnYXg2A8C9C5aEFXDoEJzmXFyfZoH/p0Wvw7oXoZbNQ823ase1wk2DQ3u7XK/BkzOqovwpM68Ko+jUyPFu6F8H4DvqsAuaUMZJ6+azjTPdS32KMBkLnpQ3VPnbsZgiktALW91/wDQEV5V7gT4JT6L62GRzeV0EDDC7rVFax2ZW6Aa6V5h/FEAgBlSbLrMVScU1s09+jxwG/9q87cB/Yxw3acBsk2Yw+nPf9Y1p88ARlNPtvPkF3LlPQYp8MtSx/FtpF8H4DNrZd8fOtTOxJSzXdo/c/fXAbN2DLeKs1dxHeEZZVWaju/3h18CcDk3qePZpllglDZ89MCq8nIQoDPAVaPi3iAFFwS1xjjr+HcYwD+hri216vBZzQbbZsE44RhAp+sQxfTpApGCoV1NOfsl4pX+nwC65a1uLnkK9TSuVTOhaQ4cBOzvtDcZXU5Bdl28SrF9HqrZJhwD7O/VsZpi7xSz7pXW6ahQ1/dB/RrYf2QhLBmr1lNINVRZfw9BBwArc4SszGlWWd2fxB9cFvJQYKnUUWAgV22y5v1e/ffHpiOAqMLCiOpymwNGtxvk9s8mfwcU2CiydqvJbdKuSX0K8a/KHQDsMQkyeVbtISFif8mRcfwRtF8F/l3/O+s/AQAA///lM0dZSaTeTQAAAABJRU5ErkJggg==',
+                                        },
+                                    'success': true,
+                                }
     /session/proxy:
         post:
             tags:
@@ -586,16 +892,33 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'S3 configuration saved successfully',
-                                                'Enabled': true,
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'S3 configuration saved successfully'
+                                            Enabled:
+                                                type: boolean
+                                                example: true
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'S3 configuration saved successfully',
+                                            'Enabled': true,
+                                        },
+                                    'success': true,
+                                }
                 '400':
                     description: Bad Request
                 '500':
@@ -613,23 +936,61 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'enabled': true,
-                                                'endpoint': 'https://s3.amazonaws.com',
-                                                'region': 'us-east-1',
-                                                'bucket': 'my-bucket',
-                                                'access_key': '***',
-                                                'path_style': false,
-                                                'public_url': '',
-                                                'media_delivery': 'both',
-                                                'retention_days': 30,
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            enabled:
+                                                type: boolean
+                                                example: true
+                                            endpoint:
+                                                type: string
+                                                example: 'https://s3.amazonaws.com'
+                                            region:
+                                                type: string
+                                                example: 'us-east-1'
+                                            bucket:
+                                                type: string
+                                                example: 'my-bucket'
+                                            access_key:
+                                                type: string
+                                                example: '***'
+                                            path_style:
+                                                type: boolean
+                                                example: false
+                                            public_url:
+                                                type: string
+                                                example: ''
+                                            media_delivery:
+                                                type: string
+                                                example: 'both'
+                                            retention_days:
+                                                type: integer
+                                                example: 30
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'enabled': true,
+                                            'endpoint': 'https://s3.amazonaws.com',
+                                            'region': 'us-east-1',
+                                            'bucket': 'my-bucket',
+                                            'access_key': '***',
+                                            'path_style': false,
+                                            'public_url': '',
+                                            'media_delivery': 'both',
+                                            'retention_days': 30,
+                                        },
+                                    'success': true,
+                                }
                 '500':
                     description: Internal Server Error
         delete:
@@ -645,15 +1006,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'S3 configuration deleted successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'S3 configuration deleted successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'S3 configuration deleted successfully',
+                                        },
+                                    'success': true,
+                                }
                 '500':
                     description: Internal Server Error
     /session/s3/test:
@@ -670,21 +1045,139 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'S3 connection test successful',
-                                                'Bucket': 'my-bucket',
-                                                'Region': 'us-east-1',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'S3 connection test successful'
+                                            Bucket:
+                                                type: string
+                                                example: 'my-bucket'
+                                            Region:
+                                                type: string
+                                                example: 'us-east-1'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'S3 connection test successful',
+                                            'Bucket': 'my-bucket',
+                                            'Region': 'us-east-1',
+                                        },
+                                    'success': true,
+                                }
                 '400':
                     description: S3 is not enabled or configuration error
                 '500':
                     description: S3 connection test failed
+    /session/history:
+        get:
+            tags:
+                - Session
+            summary: Request history sync
+            description: Requests WhatsApp to sync message history for the connected session.
+            security:
+                - ApiKeyAuth: []
+            responses:
+                '200':
+                    description: History sync requested successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'History sync requested successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'History sync requested successfully',
+                                        },
+                                    'success': true,
+                                }
+                '400':
+                    description: Bad request or session not connected
+                '500':
+                    description: Internal server error
+        post:
+            tags:
+                - Session
+            summary: Set history sync configuration
+            description: Configures history sync settings for the session.
+            security:
+                - ApiKeyAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                enabled:
+                                    type: boolean
+                                    example: true
+                                    description: 'Whether to enable history sync'
+                                days:
+                                    type: integer
+                                    example: 30
+                                    description: 'Number of days of history to sync'
+                            required:
+                                - enabled
+            responses:
+                '200':
+                    description: History sync configuration updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'History sync configuration updated successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'History sync configuration updated successfully',
+                                        },
+                                    'success': true,
+                                }
+                '400':
+                    description: Bad request or invalid configuration
+                '500':
+                    description: Internal server error
     /user/info:
         post:
             tags:
@@ -706,35 +1199,66 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Users':
-                                                    {
-                                                        '5491155553935@s.whatsapp.net':
-                                                            {
-                                                                'Devices': [],
-                                                                'PictureID': '',
-                                                                'Status': '',
-                                                                'VerifiedName': null,
-                                                            },
-                                                        '5491155553934@s.whatsapp.net':
-                                                            {
-                                                                'Devices':
-                                                                    [
-                                                                        '5491155553934.0:0@s.whatsapp.net',
-                                                                        '5491155955934.0:6@s.whatsapp.net',
-                                                                    ],
-                                                                'PictureID': '1582328807',
-                                                                'Status': '🇦🇷',
-                                                                'VerifiedName': null,
-                                                            },
-                                                    },
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Users:
+                                                type: object
+                                                additionalProperties:
+                                                    type: object
+                                                    properties:
+                                                        Devices:
+                                                            type: array
+                                                            items:
+                                                                type: string
+                                                            example: []
+                                                        PictureID:
+                                                            type: string
+                                                            example: ''
+                                                        Status:
+                                                            type: string
+                                                            example: ''
+                                                        VerifiedName:
+                                                            type: string
+                                                            nullable: true
+                                                            example: null
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Users':
+                                                {
+                                                    '5491155553935@s.whatsapp.net':
+                                                        {
+                                                            'Devices': [],
+                                                            'PictureID': '',
+                                                            'Status': '',
+                                                            'VerifiedName': null,
+                                                        },
+                                                    '5491155553934@s.whatsapp.net':
+                                                        {
+                                                            'Devices':
+                                                                [
+                                                                    '5491155553934.0:0@s.whatsapp.net',
+                                                                    '5491155955934.0:6@s.whatsapp.net',
+                                                                ],
+                                                            'PictureID': '1582328807',
+                                                            'Status': '🇦🇷',
+                                                            'VerifiedName': null,
+                                                        },
+                                                },
+                                        },
+                                    'success': true,
+                                }
     /user/check:
         post:
             tags:
@@ -756,29 +1280,57 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Users':
-                                                    [
-                                                        {
-                                                            'IsInWhatsapp': true,
-                                                            'JID': '5491155553934@s.whatsapp.net',
-                                                            'Query': '5491155553934',
-                                                            'VerifiedName': 'Company Name',
-                                                        },
-                                                        {
-                                                            'IsInWhatsapp': false,
-                                                            'JID': '5491155553935@s.whatsapp.net',
-                                                            'Query': '5491155553935',
-                                                            'VerifiedName': '',
-                                                        },
-                                                    ],
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Users:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        IsInWhatsapp:
+                                                            type: boolean
+                                                            example: true
+                                                        JID:
+                                                            type: string
+                                                            example: '5491155553934@s.whatsapp.net'
+                                                        Query:
+                                                            type: string
+                                                            example: '5491155553934'
+                                                        VerifiedName:
+                                                            type: string
+                                                            example: 'Company Name'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Users':
+                                                [
+                                                    {
+                                                        'IsInWhatsapp': true,
+                                                        'JID': '5491155553934@s.whatsapp.net',
+                                                        'Query': '5491155553934',
+                                                        'VerifiedName': 'Company Name',
+                                                    },
+                                                    {
+                                                        'IsInWhatsapp': false,
+                                                        'JID': '5491155553935@s.whatsapp.net',
+                                                        'Query': '5491155553935',
+                                                        'VerifiedName': '',
+                                                    },
+                                                ],
+                                        },
+                                    'success': true,
+                                }
     /user/presence:
         post:
             tags:
@@ -800,15 +1352,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Presence set successfuly',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Presence set successfuly'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Presence set successfuly',
+                                        },
+                                    'success': true,
+                                }
                 '400':
                     description: Response
                     content:
@@ -841,13 +1407,41 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'URL': 'https://pps.whatsapp.net/v/t61.24694-24/227295214_112447507729487_4643695328050510566_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=ja432434a91e8f41d86d341bx889c217&oe=543222A4',
-                                        'ID': '1645308319',
-                                        'Type': 'preview',
-                                        'DirectPath': '/v/t61.24694-24/227295214_112447507729487_4643695328050510566_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=ja432434a91e8f41d86d341ba889c217&oe=543222A4',
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            URL:
+                                                type: string
+                                                example: 'https://pps.whatsapp.net/v/t61.24694-24/227295214_112447507729487_4643695328050510566_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=ja432434a91e8f41d86d341bx889c217&oe=543222A4'
+                                            ID:
+                                                type: string
+                                                example: '1645308319'
+                                            Type:
+                                                type: string
+                                                example: 'preview'
+                                            DirectPath:
+                                                type: string
+                                                example: '/v/t61.24694-24/227295214_112447507729487_4643695328050510566_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=ja432434a91e8f41d86d341ba889c217&oe=543222A4'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'URL': 'https://pps.whatsapp.net/v/t61.24694-24/227295214_112447507729487_4643695328050510566_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=ja432434a91e8f41d86d341bx889c217&oe=543222A4',
+                                            'ID': '1645308319',
+                                            'Type': 'preview',
+                                            'DirectPath': '/v/t61.24694-24/227295214_112447507729487_4643695328050510566_n.jpg?stp=dst-jpg_s96x96&ccb=11-4&oh=ja432434a91e8f41d86d341ba889c217&oe=543222A4',
+                                        },
+                                    'success': true,
+                                }
     /user/contacts:
         get:
             tags:
@@ -862,29 +1456,58 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                '5491122223333@s.whatsapp.net':
-                                                    {
-                                                        'BusinessName': '',
-                                                        'FirstName': '',
-                                                        'Found': true,
-                                                        'FullName': '',
-                                                        'PushName': 'FOP2',
-                                                    },
-                                                '549113334444@s.whatsapp.net':
-                                                    {
-                                                        'BusinessName': '',
-                                                        'FirstName': '',
-                                                        'Found': true,
-                                                        'FullName': '',
-                                                        'PushName': 'Asternic',
-                                                    },
-                                            },
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        additionalProperties:
+                                            type: object
+                                            properties:
+                                                BusinessName:
+                                                    type: string
+                                                    example: ''
+                                                FirstName:
+                                                    type: string
+                                                    example: ''
+                                                Found:
+                                                    type: boolean
+                                                    example: true
+                                                FullName:
+                                                    type: string
+                                                    example: ''
+                                                PushName:
+                                                    type: string
+                                                    example: 'FOP2'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            '5491122223333@s.whatsapp.net':
+                                                {
+                                                    'BusinessName': '',
+                                                    'FirstName': '',
+                                                    'Found': true,
+                                                    'FullName': '',
+                                                    'PushName': 'FOP2',
+                                                },
+                                            '549113334444@s.whatsapp.net':
+                                                {
+                                                    'BusinessName': '',
+                                                    'FirstName': '',
+                                                    'Found': true,
+                                                    'FullName': '',
+                                                    'PushName': 'Asternic',
+                                                },
+                                        },
+                                    'success': true,
+                                }
     /chat/delete:
         post:
             tags:
@@ -906,13 +1529,26 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            { 'Details': 'Message deleted' },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Message deleted'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data': { 'Details': 'Message deleted' },
+                                    'success': true,
+                                }
     /chat/markread:
         post:
             tags:
@@ -934,15 +1570,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Message(s) marked as read',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Message(s) marked as read'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Message(s) marked as read',
+                                        },
+                                    'success': true,
+                                }
     /chat/react:
         post:
             tags:
@@ -964,17 +1614,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '3EB06F9067F80BAB89FF',
-                                                'Timestamp': '2022-05-10T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '3EB06F9067F80BAB89FF'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-05-10T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '3EB06F9067F80BAB89FF',
+                                            'Timestamp': '2022-05-10T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/text:
         post:
             tags:
@@ -996,17 +1666,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/edit:
         post:
             tags:
@@ -1095,17 +1785,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/audio:
         post:
             tags:
@@ -1127,17 +1837,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/document:
         post:
             tags:
@@ -1159,49 +1889,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
-    /chat/send/template:
-        post:
-            tags:
-                - Chat
-            summary: Sends a template message
-            description: Sends a template message, that can contain quick reply buttons, url buttons and call buttons
-            security:
-                - ApiKeyAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/MessageTemplate'
-
-            responses:
-                '200':
-                    description: Response
-                    content:
-                        application/json:
-                            schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/video:
         post:
             tags:
@@ -1223,17 +1941,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/sticker:
         post:
             tags:
@@ -1255,17 +1993,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/location:
         post:
             tags:
@@ -1287,17 +2045,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/contact:
         post:
             tags:
@@ -1319,17 +2097,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/buttons:
         post:
             tags:
@@ -1350,17 +2148,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/list:
         post:
             tags:
@@ -1381,17 +2199,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/send/poll:
         post:
             tags:
@@ -1412,17 +2250,37 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Sent',
-                                                'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                                'Timestamp': '2022-04-20T12:49:08-03:00',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Sent'
+                                            Id:
+                                                type: string
+                                                example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
+                                            Timestamp:
+                                                type: string
+                                                example: '2022-04-20T12:49:08-03:00'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Sent',
+                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                        },
+                                    'success': true,
+                                }
     /chat/downloadimage:
         post:
             tags:
@@ -1444,16 +2302,33 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Data': 'data:image/jpeg;base64,iVBORw0KGgoA5CYII...=',
-                                                'Mimetype': 'image/jpeg',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Data:
+                                                type: string
+                                                example: 'data:image/jpeg;base64,iVBORw0KGgoA5CYII...='
+                                            Mimetype:
+                                                type: string
+                                                example: 'image/jpeg'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Data': 'data:image/jpeg;base64,iVBORw0KGgoA5CYII...=',
+                                            'Mimetype': 'image/jpeg',
+                                        },
+                                    'success': true,
+                                }
     /chat/downloadvideo:
         post:
             tags:
@@ -1475,16 +2350,33 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Data': 'data:video/mp4;base64,iVBORw0KGgoA5CYII...=',
-                                                'Mimetype': 'video/mp4',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Data:
+                                                type: string
+                                                example: 'data:video/mp4;base64,iVBORw0KGgoA5CYII...='
+                                            Mimetype:
+                                                type: string
+                                                example: 'video/mp4'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Data': 'data:video/mp4;base64,iVBORw0KGgoA5CYII...=',
+                                            'Mimetype': 'video/mp4',
+                                        },
+                                    'success': true,
+                                }
     /chat/downloaddocument:
         post:
             tags:
@@ -1506,16 +2398,80 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Data': 'data:application/pdf;base64,iVBORw0KGgoA5CYII...=',
-                                                'Mimetype': 'application/pdf',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Data:
+                                                type: string
+                                                example: 'data:application/pdf;base64,iVBORw0KGgoA5CYII...='
+                                            Mimetype:
+                                                type: string
+                                                example: 'application/pdf'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Data': 'data:application/pdf;base64,iVBORw0KGgoA5CYII...=',
+                                            'Mimetype': 'application/pdf',
+                                        },
+                                    'success': true,
+                                }
+    /chat/downloadaudio:
+        post:
+            tags:
+                - Chat
+            summary: Downloads Audio from message
+            description: Downloads an Audio from a message and returns it Base64 media encoded
+            security:
+                - ApiKeyAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/DownloadImage'
+            responses:
+                '200':
+                    description: Response
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Data:
+                                                type: string
+                                                example: 'data:audio/ogg;base64,iVBORw0KGgoA5CYII...='
+                                            Mimetype:
+                                                type: string
+                                                example: 'audio/ogg'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Data': 'data:audio/ogg;base64,iVBORw0KGgoA5CYII...=',
+                                            'Mimetype': 'audio/ogg',
+                                        },
+                                    'success': true,
+                                }
     /chat/presence:
         post:
             tags:
@@ -1537,15 +2493,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Chat presence set successfuly',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Chat presence set successfuly'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Chat presence set successfuly',
+                                        },
+                                    'success': true,
+                                }
     /chat/history:
         get:
             tags:
@@ -1665,39 +2635,100 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'AnnounceVersionID': '1234567890',
-                                                'DisappearingTimer': 0,
-                                                'GroupCreated': '2023-12-01T10:00:00Z',
-                                                'IsAnnounce': false,
-                                                'IsEphemeral': false,
-                                                'IsLocked': false,
-                                                'JID': '120363123456789@g.us',
-                                                'Name': 'My New Group',
-                                                'NameSetAt': '2023-12-01T10:00:00Z',
-                                                'NameSetBy': '5491155554444@s.whatsapp.net',
-                                                'OwnerJID': '5491155554444@s.whatsapp.net',
-                                                'ParticipantVersionID': '1234567890',
-                                                'Participants':
-                                                    [
-                                                        {
-                                                            'IsAdmin': true,
-                                                            'IsSuperAdmin': true,
-                                                            'JID': '5491155554444@s.whatsapp.net',
-                                                        },
-                                                        {
-                                                            'IsAdmin': false,
-                                                            'IsSuperAdmin': false,
-                                                            'JID': '5491155553333@s.whatsapp.net',
-                                                        },
-                                                    ],
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            AnnounceVersionID:
+                                                type: string
+                                                example: '1234567890'
+                                            DisappearingTimer:
+                                                type: integer
+                                                example: 0
+                                            GroupCreated:
+                                                type: string
+                                                example: '2023-12-01T10:00:00Z'
+                                            IsAnnounce:
+                                                type: boolean
+                                                example: false
+                                            IsEphemeral:
+                                                type: boolean
+                                                example: false
+                                            IsLocked:
+                                                type: boolean
+                                                example: false
+                                            JID:
+                                                type: string
+                                                example: '120363123456789@g.us'
+                                            Name:
+                                                type: string
+                                                example: 'My New Group'
+                                            NameSetAt:
+                                                type: string
+                                                example: '2023-12-01T10:00:00Z'
+                                            NameSetBy:
+                                                type: string
+                                                example: '5491155554444@s.whatsapp.net'
+                                            OwnerJID:
+                                                type: string
+                                                example: '5491155554444@s.whatsapp.net'
+                                            ParticipantVersionID:
+                                                type: string
+                                                example: '1234567890'
+                                            Participants:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        IsAdmin:
+                                                            type: boolean
+                                                            example: true
+                                                        IsSuperAdmin:
+                                                            type: boolean
+                                                            example: true
+                                                        JID:
+                                                            type: string
+                                                            example: '5491155554444@s.whatsapp.net'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'AnnounceVersionID': '1234567890',
+                                            'DisappearingTimer': 0,
+                                            'GroupCreated': '2023-12-01T10:00:00Z',
+                                            'IsAnnounce': false,
+                                            'IsEphemeral': false,
+                                            'IsLocked': false,
+                                            'JID': '120363123456789@g.us',
+                                            'Name': 'My New Group',
+                                            'NameSetAt': '2023-12-01T10:00:00Z',
+                                            'NameSetBy': '5491155554444@s.whatsapp.net',
+                                            'OwnerJID': '5491155554444@s.whatsapp.net',
+                                            'ParticipantVersionID': '1234567890',
+                                            'Participants':
+                                                [
+                                                    {
+                                                        'IsAdmin': true,
+                                                        'IsSuperAdmin': true,
+                                                        'JID': '5491155554444@s.whatsapp.net',
+                                                    },
+                                                    {
+                                                        'IsAdmin': false,
+                                                        'IsSuperAdmin': false,
+                                                        'JID': '5491155553333@s.whatsapp.net',
+                                                    },
+                                                ],
+                                        },
+                                    'success': true,
+                                }
     /group/locked:
         post:
             tags:
@@ -1718,15 +2749,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Group locked setting updated successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Group locked setting updated successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Group locked setting updated successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/ephemeral:
         post:
             tags:
@@ -1747,15 +2792,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Disappearing timer set successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Disappearing timer set successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Disappearing timer set successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/photo/remove:
         post:
             tags:
@@ -1776,15 +2835,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Group photo removed successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Group photo removed successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Group photo removed successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/list:
         get:
             tags:
@@ -1800,53 +2873,131 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Groups':
-                                                    [
-                                                        {
-                                                            'AnnounceVersionID': '1650572126123738',
-                                                            'DisappearingTimer': 0,
-                                                            'GroupCreated': '2022-04-21T17:15:26-03:00',
-                                                            'IsAnnounce': false,
-                                                            'IsEphemeral': false,
-                                                            'IsLocked': false,
-                                                            'JID': '120362023605733675@g.us',
-                                                            'Name': 'Super Group',
-                                                            'NameSetAt': '2022-04-21T17:15:26-03:00',
-                                                            'NameSetBy': '5491155554444@s.whatsapp.net',
-                                                            'OwnerJID': '5491155554444@s.whatsapp.net',
-                                                            'ParticipantVersionID': '1650234126145738',
-                                                            'Participants':
-                                                                [
-                                                                    {
-                                                                        'IsAdmin': true,
-                                                                        'IsSuperAdmin': true,
-                                                                        'JID': '5491155554444@s.whatsapp.net',
-                                                                    },
-                                                                    {
-                                                                        'IsAdmin': false,
-                                                                        'IsSuperAdmin': false,
-                                                                        'JID': '5491155553333@s.whatsapp.net',
-                                                                    },
-                                                                    {
-                                                                        'IsAdmin': false,
-                                                                        'IsSuperAdmin': false,
-                                                                        'JID': '5491155552222@s.whatsapp.net',
-                                                                    },
-                                                                ],
-                                                            'Topic': '',
-                                                            'TopicID': '',
-                                                            'TopicSetAt': '0001-01-01T00:00:00Z',
-                                                            'TopicSetBy': '',
-                                                        },
-                                                    ],
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Groups:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        AnnounceVersionID:
+                                                            type: string
+                                                            example: '1650572126123738'
+                                                        DisappearingTimer:
+                                                            type: integer
+                                                            example: 0
+                                                        GroupCreated:
+                                                            type: string
+                                                            example: '2022-04-21T17:15:26-03:00'
+                                                        IsAnnounce:
+                                                            type: boolean
+                                                            example: false
+                                                        IsEphemeral:
+                                                            type: boolean
+                                                            example: false
+                                                        IsLocked:
+                                                            type: boolean
+                                                            example: false
+                                                        JID:
+                                                            type: string
+                                                            example: '120362023605733675@g.us'
+                                                        Name:
+                                                            type: string
+                                                            example: 'Super Group'
+                                                        NameSetAt:
+                                                            type: string
+                                                            example: '2022-04-21T17:15:26-03:00'
+                                                        NameSetBy:
+                                                            type: string
+                                                            example: '5491155554444@s.whatsapp.net'
+                                                        OwnerJID:
+                                                            type: string
+                                                            example: '5491155554444@s.whatsapp.net'
+                                                        ParticipantVersionID:
+                                                            type: string
+                                                            example: '1650234126145738'
+                                                        Participants:
+                                                            type: array
+                                                            items:
+                                                                type: object
+                                                                properties:
+                                                                    IsAdmin:
+                                                                        type: boolean
+                                                                        example: true
+                                                                    IsSuperAdmin:
+                                                                        type: boolean
+                                                                        example: true
+                                                                    JID:
+                                                                        type: string
+                                                                        example: '5491155554444@s.whatsapp.net'
+                                                        Topic:
+                                                            type: string
+                                                            example: ''
+                                                        TopicID:
+                                                            type: string
+                                                            example: ''
+                                                        TopicSetAt:
+                                                            type: string
+                                                            example: '0001-01-01T00:00:00Z'
+                                                        TopicSetBy:
+                                                            type: string
+                                                            example: ''
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Groups':
+                                                [
+                                                    {
+                                                        'AnnounceVersionID': '1650572126123738',
+                                                        'DisappearingTimer': 0,
+                                                        'GroupCreated': '2022-04-21T17:15:26-03:00',
+                                                        'IsAnnounce': false,
+                                                        'IsEphemeral': false,
+                                                        'IsLocked': false,
+                                                        'JID': '120362023605733675@g.us',
+                                                        'Name': 'Super Group',
+                                                        'NameSetAt': '2022-04-21T17:15:26-03:00',
+                                                        'NameSetBy': '5491155554444@s.whatsapp.net',
+                                                        'OwnerJID': '5491155554444@s.whatsapp.net',
+                                                        'ParticipantVersionID': '1650234126145738',
+                                                        'Participants':
+                                                            [
+                                                                {
+                                                                    'IsAdmin': true,
+                                                                    'IsSuperAdmin': true,
+                                                                    'JID': '5491155554444@s.whatsapp.net',
+                                                                },
+                                                                {
+                                                                    'IsAdmin': false,
+                                                                    'IsSuperAdmin': false,
+                                                                    'JID': '5491155553333@s.whatsapp.net',
+                                                                },
+                                                                {
+                                                                    'IsAdmin': false,
+                                                                    'IsSuperAdmin': false,
+                                                                    'JID': '5491155552222@s.whatsapp.net',
+                                                                },
+                                                            ],
+                                                        'Topic': '',
+                                                        'TopicID': '',
+                                                        'TopicSetAt': '0001-01-01T00:00:00Z',
+                                                        'TopicSetBy': '',
+                                                    },
+                                                ],
+                                        },
+                                    'success': true,
+                                }
     /group/invitelink:
         get:
             tags:
@@ -1874,15 +3025,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'InviteLink': 'https://chat.whatsapp.com/HffXhYmzzyJGec61oqMXiz',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            InviteLink:
+                                                type: string
+                                                example: 'https://chat.whatsapp.com/HffXhYmzzyJGec61oqMXiz'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'InviteLink': 'https://chat.whatsapp.com/HffXhYmzzyJGec61oqMXiz',
+                                        },
+                                    'success': true,
+                                }
     /group/info:
         get:
             tags:
@@ -1904,48 +3069,121 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'AnnounceVersionID': '1650572126123738',
-                                                'DisappearingTimer': 0,
-                                                'GroupCreated': '2022-04-21T17:15:26-03:00',
-                                                'IsAnnounce': false,
-                                                'IsEphemeral': false,
-                                                'IsLocked': false,
-                                                'JID': '120362023605733675@g.us',
-                                                'Name': 'Super Group',
-                                                'NameSetAt': '2022-04-21T17:15:26-03:00',
-                                                'NameSetBy': '5491155554444@s.whatsapp.net',
-                                                'OwnerJID': '5491155554444@s.whatsapp.net',
-                                                'ParticipantVersionID': '1650234126145738',
-                                                'Participants':
-                                                    [
-                                                        {
-                                                            'IsAdmin': true,
-                                                            'IsSuperAdmin': true,
-                                                            'JID': '5491155554444@s.whatsapp.net',
-                                                        },
-                                                        {
-                                                            'IsAdmin': false,
-                                                            'IsSuperAdmin': false,
-                                                            'JID': '5491155553333@s.whatsapp.net',
-                                                        },
-                                                        {
-                                                            'IsAdmin': false,
-                                                            'IsSuperAdmin': false,
-                                                            'JID': '5491155552222@s.whatsapp.net',
-                                                        },
-                                                    ],
-                                                'Topic': '',
-                                                'TopicID': '',
-                                                'TopicSetAt': '0001-01-01T00:00:00Z',
-                                                'TopicSetBy': '',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            AnnounceVersionID:
+                                                type: string
+                                                example: '1650572126123738'
+                                            DisappearingTimer:
+                                                type: integer
+                                                example: 0
+                                            GroupCreated:
+                                                type: string
+                                                example: '2022-04-21T17:15:26-03:00'
+                                            IsAnnounce:
+                                                type: boolean
+                                                example: false
+                                            IsEphemeral:
+                                                type: boolean
+                                                example: false
+                                            IsLocked:
+                                                type: boolean
+                                                example: false
+                                            JID:
+                                                type: string
+                                                example: '120362023605733675@g.us'
+                                            Name:
+                                                type: string
+                                                example: 'Super Group'
+                                            NameSetAt:
+                                                type: string
+                                                example: '2022-04-21T17:15:26-03:00'
+                                            NameSetBy:
+                                                type: string
+                                                example: '5491155554444@s.whatsapp.net'
+                                            OwnerJID:
+                                                type: string
+                                                example: '5491155554444@s.whatsapp.net'
+                                            ParticipantVersionID:
+                                                type: string
+                                                example: '1650234126145738'
+                                            Participants:
+                                                type: array
+                                                items:
+                                                    type: object
+                                                    properties:
+                                                        IsAdmin:
+                                                            type: boolean
+                                                            example: true
+                                                        IsSuperAdmin:
+                                                            type: boolean
+                                                            example: true
+                                                        JID:
+                                                            type: string
+                                                            example: '5491155554444@s.whatsapp.net'
+                                            Topic:
+                                                type: string
+                                                example: ''
+                                            TopicID:
+                                                type: string
+                                                example: ''
+                                            TopicSetAt:
+                                                type: string
+                                                example: '0001-01-01T00:00:00Z'
+                                            TopicSetBy:
+                                                type: string
+                                                example: ''
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'AnnounceVersionID': '1650572126123738',
+                                            'DisappearingTimer': 0,
+                                            'GroupCreated': '2022-04-21T17:15:26-03:00',
+                                            'IsAnnounce': false,
+                                            'IsEphemeral': false,
+                                            'IsLocked': false,
+                                            'JID': '120362023605733675@g.us',
+                                            'Name': 'Super Group',
+                                            'NameSetAt': '2022-04-21T17:15:26-03:00',
+                                            'NameSetBy': '5491155554444@s.whatsapp.net',
+                                            'OwnerJID': '5491155554444@s.whatsapp.net',
+                                            'ParticipantVersionID': '1650234126145738',
+                                            'Participants':
+                                                [
+                                                    {
+                                                        'IsAdmin': true,
+                                                        'IsSuperAdmin': true,
+                                                        'JID': '5491155554444@s.whatsapp.net',
+                                                    },
+                                                    {
+                                                        'IsAdmin': false,
+                                                        'IsSuperAdmin': false,
+                                                        'JID': '5491155553333@s.whatsapp.net',
+                                                    },
+                                                    {
+                                                        'IsAdmin': false,
+                                                        'IsSuperAdmin': false,
+                                                        'JID': '5491155552222@s.whatsapp.net',
+                                                    },
+                                                ],
+                                            'Topic': '',
+                                            'TopicID': '',
+                                            'TopicSetAt': '0001-01-01T00:00:00Z',
+                                            'TopicSetBy': '',
+                                        },
+                                    'success': true,
+                                }
     /group/photo:
         post:
             tags:
@@ -1967,16 +3205,33 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Group Photo set successfully',
-                                                'PictureID': '1222332123',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Group Photo set successfully'
+                                            PictureID:
+                                                type: string
+                                                example: '1222332123'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Group Photo set successfully',
+                                            'PictureID': '1222332123',
+                                        },
+                                    'success': true,
+                                }
     /group/leave:
         post:
             tags:
@@ -1997,15 +3252,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Left group successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Left group successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Left group successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/name:
         post:
             tags:
@@ -2026,15 +3295,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Group Name set successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Group Name set successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Group Name set successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/topic:
         post:
             tags:
@@ -2055,15 +3338,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Group Topic set successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Group Topic set successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Group Topic set successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/announce:
         post:
             tags:
@@ -2084,15 +3381,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Group Announce mode set successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Group Announce mode set successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Group Announce mode set successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/join:
         post:
             tags:
@@ -2113,15 +3424,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Joined group successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Joined group successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Joined group successfully',
+                                        },
+                                    'success': true,
+                                }
     /group/inviteinfo:
         post:
             tags:
@@ -2142,19 +3467,39 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'InviteInfo':
-                                                    {
-                                                        'GroupName': 'Test Group',
-                                                        'GroupJID': '120363312246943103@g.us',
-                                                    },
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            InviteInfo:
+                                                type: object
+                                                properties:
+                                                    GroupName:
+                                                        type: string
+                                                        example: 'Test Group'
+                                                    GroupJID:
+                                                        type: string
+                                                        example: '120363312246943103@g.us'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'InviteInfo':
+                                                {
+                                                    'GroupName': 'Test Group',
+                                                    'GroupJID': '120363312246943103@g.us',
+                                                },
+                                        },
+                                    'success': true,
+                                }
     /group/updateparticipants:
         post:
             tags:
@@ -2175,15 +3520,29 @@ paths:
                     content:
                         application/json:
                             schema:
-                                example:
-                                    {
-                                        'code': 200,
-                                        'data':
-                                            {
-                                                'Details': 'Participants updated successfully',
-                                            },
-                                        'success': true,
-                                    }
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 200
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        type: object
+                                        properties:
+                                            Details:
+                                                type: string
+                                                example: 'Participants updated successfully'
+                            example:
+                                {
+                                    'code': 200,
+                                    'data':
+                                        {
+                                            'Details': 'Participants updated successfully',
+                                        },
+                                    'success': true,
+                                }
 
 components:
     schemas:
@@ -2205,6 +3564,30 @@ components:
                 events:
                     type: string
                     example: 'All'
+                expiration:
+                    type: integer
+                    example: 0
+                    description: 'Token expiration time in seconds (0 means no expiration)'
+                connected:
+                    type: boolean
+                    example: true
+                    description: 'Whether the user is currently connected to WhatsApp'
+                jid:
+                    type: string
+                    example: '5491155551122:12@s.whatsapp.net'
+                    description: 'WhatsApp JID of the user'
+                loggedIn:
+                    type: boolean
+                    example: true
+                    description: 'Whether the user is logged in to WhatsApp'
+                proxy_url:
+                    type: string
+                    example: ''
+                    description: 'Proxy URL configured for the user'
+                qrcode:
+                    type: string
+                    example: ''
+                    description: 'QR code for authentication (if available)'
                 proxy_config:
                     type: object
                     properties:
