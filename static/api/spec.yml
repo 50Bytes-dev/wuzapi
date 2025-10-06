@@ -54,6 +54,58 @@ paths:
                                         ],
                                     'success': true,
                                 }
+        post:
+            tags:
+                - Admin
+            summary: Create a new user
+            description: Add a new user to the database.
+            security:
+                - AdminAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/CreateUser'
+            responses:
+                '201':
+                    description: User created
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    code:
+                                        type: integer
+                                        example: 201
+                                    success:
+                                        type: boolean
+                                        example: true
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                            example:
+                                code: 201
+                                success: true
+                                data:
+                                    id: '80afffa8affabe8718f7c1863507cf9e'
+                                    name: 'Clasta Dev'
+                                    token: '3WftyVpmfy4VJphrbZiuAN'
+                                    webhook: ''
+                                    events: 'All'
+                                    expiration: 0
+                                    proxy_config:
+                                        enabled: false
+                                        proxy_url: ''
+                                    s3_config:
+                                        enabled: false
+                                        endpoint: ''
+                                        region: ''
+                                        bucket: ''
+                                        access_key: ''
+                                        path_style: false
+                                        public_url: ''
+                                        media_delivery: 'both'
+                                        retention_days: 30
     /admin/users/{id}:
         get:
             tags:
@@ -167,58 +219,6 @@ paths:
                                         access_key: '***'
                                         path_style: true
                                         public_url: 'https://s3.amazonaws.com'
-                                        media_delivery: 'both'
-                                        retention_days: 30
-        post:
-            tags:
-                - Admin
-            summary: Create a new user
-            description: Add a new user to the database.
-            security:
-                - AdminAuth: []
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/CreateUser'
-            responses:
-                '201':
-                    description: User created
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    code:
-                                        type: integer
-                                        example: 201
-                                    success:
-                                        type: boolean
-                                        example: true
-                                    data:
-                                        $ref: '#/components/schemas/User'
-                            example:
-                                code: 201
-                                success: true
-                                data:
-                                    id: '80afffa8affabe8718f7c1863507cf9e'
-                                    name: 'Clasta Dev'
-                                    token: '3WftyVpmfy4VJphrbZiuAN'
-                                    webhook: ''
-                                    events: 'All'
-                                    expiration: 0
-                                    proxy_config:
-                                        enabled: false
-                                        proxy_url: ''
-                                    s3_config:
-                                        enabled: false
-                                        endpoint: ''
-                                        region: ''
-                                        bucket: ''
-                                        access_key: ''
-                                        path_style: false
-                                        public_url: ''
                                         media_delivery: 'both'
                                         retention_days: 30
         delete:
