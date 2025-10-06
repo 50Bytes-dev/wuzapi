@@ -602,9 +602,9 @@ paths:
                                             },
                                         'success': true,
                                     }
-                400:
+                '400':
                     description: Bad Request
-                500:
+                '500':
                     description: Internal Server Error
         get:
             tags:
@@ -636,7 +636,7 @@ paths:
                                             },
                                         'success': true,
                                     }
-                500:
+                '500':
                     description: Internal Server Error
         delete:
             tags:
@@ -660,7 +660,7 @@ paths:
                                             },
                                         'success': true,
                                     }
-                500:
+                '500':
                     description: Internal Server Error
     /session/s3/test:
         post:
@@ -687,9 +687,9 @@ paths:
                                             },
                                         'success': true,
                                     }
-                400:
+                '400':
                     description: S3 is not enabled or configuration error
-                500:
+                '500':
                     description: S3 connection test failed
     /user/info:
         post:
@@ -815,7 +815,7 @@ paths:
                                             },
                                         'success': true,
                                     }
-                400:
+                '400':
                     description: Response
                     content:
                         application/json:
@@ -1064,7 +1064,7 @@ paths:
                                     success:
                                         type: boolean
                                         example: true
-                400:
+                '400':
                     description: Invalid parameters or message not found
                     content:
                         application/json:
@@ -1618,7 +1618,7 @@ paths:
                                           message_type: 'image'
                                           text_content: 'Check out this photo!'
                                           media_link: 'https://example.com/media/image123.jpg'
-                400:
+                '400':
                     description: Bad request - missing or invalid parameters
                     content:
                         application/json:
@@ -1629,7 +1629,7 @@ paths:
                                         'error': 'chat_jid is required',
                                         'success': false,
                                     }
-                501:
+                '501':
                     description: Not implemented - message history is disabled
                     content:
                         application/json:
@@ -1640,7 +1640,7 @@ paths:
                                         'error': 'message history is disabled',
                                         'success': false,
                                     }
-                500:
+                '500':
                     description: Internal server error
                     content:
                         application/json:
