@@ -652,8 +652,7 @@ func (s *server) GetStatus() http.HandlerFunc {
 			}
 		*/
 
-		isConnected := clientManager.GetWhatsmeowClient(txtid).IsConnected()
-		isLoggedIn := clientManager.GetWhatsmeowClient(txtid).IsLoggedIn()
+		isConnected, isLoggedIn := SafeWhatsmeowClientStatus(txtid)
 
 		// Get proxy_config
 		var proxyURL string

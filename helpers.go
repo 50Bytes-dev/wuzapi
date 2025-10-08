@@ -22,6 +22,15 @@ func Find(slice []string, val string) bool {
 	return false
 }
 
+func SafeWhatsmeowClientStatus(userID string) (isConnected, isLoggedIn bool) {
+	client := clientManager.GetWhatsmeowClient(userID)
+	if client == nil {
+		log.Warn().Str("userID", userID).Msg("WhatsmeowClient not found for user")
+		return false, false
+	}
+	return client.IsConnected(), client.IsLoggedIn()
+}
+
 func isHTTPURL(input string) bool {
 	parsed, err := url.ParseRequestURI(input)
 	if err != nil {
@@ -81,6 +90,10 @@ func callHook(myurl string, payload map[string]string, id string) {
 	}
 
 	client := clientManager.GetHTTPClient(id)
+	if client == nil {
+		log.Warn().Str("userID", id).Msg("HTTP client not found, skipping webhook")
+		return
+	}
 
 	format := os.Getenv("WEBHOOK_FORMAT")
 	if format == "json" {
@@ -117,6 +130,10 @@ func callHookFile(myurl string, payload map[string]string, id string, file strin
 	log.Info().Str("file", file).Str("url", myurl).Msg("Sending POST")
 
 	client := clientManager.GetHTTPClient(id)
+	if client == nil {
+		log.Warn().Str("userID", id).Msg("HTTP client not found, skipping webhook")
+		return fmt.Errorf("HTTP client not found for user %s", id)
+	}
 
 	// Create final payload map
 	finalPayload := make(map[string]string)

@@ -519,7 +519,7 @@ func (s *server) startClient(userID string, textjid string, token string, subscr
 			clientManager.DeleteMyClient(userID)
 			clientManager.DeleteHTTPClient(userID)
 			sqlStmt := `UPDATE users SET qrcode='', connected=0 WHERE id=$1`
-			_, err := s.db.Exec(sqlStmt, "", userID)
+			_, err := s.db.Exec(sqlStmt, userID)
 			if err != nil {
 				log.Error().Err(err).Msg(sqlStmt)
 			}
@@ -1226,8 +1226,9 @@ func (mycli *MyClient) myEventHandler(rawEvt interface{}) {
 		log.Info().Str("index", fmt.Sprintf("%+v", evt.Index)).Str("actionValue", fmt.Sprintf("%+v", evt.SyncActionValue)).Msg("App state event received")
 	case *events.LoggedOut:
 		postmap["type"] = "Logged Out"
-		dowebhook = 1
+		dowebhook = 0
 		log.Info().Str("reason", evt.Reason.String()).Msg("Logged out")
+		sendEventWithWebHook(mycli, postmap, path)
 		killchannel[mycli.userID] <- true
 		sqlStmt := `UPDATE users SET connected=0 WHERE id=$1`
 		_, err := mycli.db.Exec(sqlStmt, mycli.userID)
@@ -1251,8 +1252,9 @@ func (mycli *MyClient) myEventHandler(rawEvt interface{}) {
 		log.Info().Str("event", fmt.Sprintf("%+v", evt)).Msg("Got call relay latency")
 	case *events.Disconnected:
 		postmap["type"] = "Disconnected"
-		dowebhook = 1
+		dowebhook = 0
 		log.Info().Str("reason", fmt.Sprintf("%+v", evt)).Msg("Disconnected from Whatsapp")
+		sendEventWithWebHook(mycli, postmap, path)
 	case *events.ConnectFailure:
 		postmap["type"] = "ConnectFailure"
 		dowebhook = 1
