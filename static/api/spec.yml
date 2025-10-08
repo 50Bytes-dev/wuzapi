@@ -463,10 +463,10 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            WebhookURL:
+                                            webhook:
                                                 type: string
                                                 example: 'https://example.net/webhook'
-                                            Events:
+                                            events:
                                                 type: array
                                                 items:
                                                     type: string
@@ -477,8 +477,8 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'WebhookURL': 'https://example.net/webhook',
-                                            'Events':
+                                            'webhook_url': 'https://example.net/webhook',
+                                            'events':
                                                 ['Message', 'ReadReceipt'],
                                         },
                                     'success': true,
@@ -507,7 +507,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Webhook and events deleted successfully'
                             example:
@@ -515,7 +515,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Webhook and events deleted successfully',
+                                            'details': 'Webhook and events deleted successfully',
                                         },
                                     'success': true,
                                 }
@@ -561,10 +561,10 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            WebhookURL:
+                                            webhook:
                                                 type: string
                                                 example: 'https://example.net/webhook'
-                                            Events:
+                                            events:
                                                 type: array
                                                 items:
                                                     type: string
@@ -578,8 +578,8 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'WebhookURL': 'https://example.net/webhook',
-                                            'Events':
+                                            'webhook': 'https://example.net/webhook',
+                                            'events':
                                                 ['Message', 'ReadReceipt'],
                                             'active': true,
                                         },
@@ -667,13 +667,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Disconnected'
                             example:
                                 {
                                     'code': 200,
-                                    'data': { 'Details': 'Disconnected' },
+                                    'data': { 'details': 'Disconnected' },
                                     'success': true,
                                 }
     /session/logout:
@@ -701,13 +701,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Logged out'
                             example:
                                 {
                                     'code': 200,
-                                    'data': { 'Details': 'Logged out' },
+                                    'data': { 'details': 'Logged out' },
                                     'success': true,
                                 }
     /session/status:
@@ -735,17 +735,17 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Connected:
+                                            connected:
                                                 type: boolean
                                                 example: true
-                                            LoggedIn:
+                                            loggedIn:
                                                 type: boolean
                                                 example: true
                             example:
                                 {
                                     'code': 200,
                                     'data':
-                                        { 'Connected': true, 'LoggedIn': true },
+                                        { 'connected': true, 'loggedIn': true },
                                     'success': true,
                                 }
     /session/pairphone:
@@ -779,13 +779,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            LinkingCode:
+                                            linking_code:
                                                 type: string
                                                 example: '9H3J-H3J8'
                             example:
                                 {
                                     'code': 200,
-                                    'data': { 'LinkingCode': '9H3J-H3J8' },
+                                    'data': { 'linking_code': '9H3J-H3J8' },
                                     'success': true,
                                 }
     /session/qr:
@@ -813,7 +813,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            QRCode:
+                                            qrcode:
                                                 type: string
                                                 example: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEw0lEQVR42uyZPa7zqhaGX0ThLmsCkZlGCktMKaU76FxmSkgUmQZWJkA6CuT3avlLvrNvvRMX9x6KXWQ/UhCsn2cR/Lv+v5YhudQ6njEs1bBjqGYDwlJJpoOAArtUbK4Pi5jN3qPAlCkstcAeBazMUaoj78RpxGW4yWYzWVfmzwFLlLX4O+VkkucN5tFDOxiIAvfoA/X4uVQ4sgUcCBTYCG7AEGGKvbdrBabQ8OOyvg3ovm4ynqfLXJ9rvi+303ie5vm/gvZXgK6BLC7fo5hiG4KwW7b6I/2+DJi1+ybVFQyx6o6bbKPVDCyjTwcBZB9uevBtAEafhiosCFH/4kNA8i1gg02B3KxezGbzEjUCDgIwYppR3SNdgtY3H0M1j8xFzCscvg/8uQvZAB9piidv1RXfZhbHdAwAlzsCNCaJDdMF4WQeeSGACZ8BMNl4FZYJA7j2YalPPhhngetHAaZPcyBg2wyYdAk0fKQ5yPja5PcBzTZW4uxJ2bTGwmxnu/BH4vwSgEsYItcCH+VZJt/AYhmHatbXdX8d2JvaTVzxCVW2aVhqheXSqvnR9b4L6AoUx3zX+jZd5rDB5jbLuv0txd8GRs+liuv+TsKloQWujxxRYf5s8gOA7fMVK9PQuDtMNCx2ibIdCMCy1s0yQU6Od9bqim1BuzoOAgzTHOiKv0d5Mt+XClN8DBxN/wxg2G2DbDYNJExCqE+Ne8poXoLxdUA/w5VrnxBQ9fjlqaJMwWgPAzLjtfKRW4A21ojnStX0dX2d5PeB0fawu2pChcuM4bk+tLmbMn0GMJslb5ptDXySbb5W1+0SyVcJOgRIQxSc7X0RUSvGs2DSeaz4gwCMNi/7XNACZc0KbPBtruv2KQA+DVFladBvt4xywhmh1Xd2fx8wzGTUltqCWrHWgqL7Jg8E0hSiFJfbUJ/Fpx3L1OHsVR8+APgoZMclUKvcft2+zTBrwjHArosim4ZcfW4Y4lVWnYXg2A8C9C5aEFXDoEJzmXFyfZoH/p0Wvw7oXoZbNQ823ase1wk2DQ3u7XK/BkzOqovwpM68Ko+jUyPFu6F8H4DvqsAuaUMZJ6+azjTPdS32KMBkLnpQ3VPnbsZgiktALW91/wDQEV5V7gT4JT6L62GRzeV0EDDC7rVFax2ZW6Aa6V5h/FEAgBlSbLrMVScU1s09+jxwG/9q87cB/Yxw3acBsk2Yw+nPf9Y1p88ARlNPtvPkF3LlPQYp8MtSx/FtpF8H4DNrZd8fOtTOxJSzXdo/c/fXAbN2DLeKs1dxHeEZZVWaju/3h18CcDk3qePZpllglDZ89MCq8nIQoDPAVaPi3iAFFwS1xjjr+HcYwD+hri216vBZzQbbZsE44RhAp+sQxfTpApGCoV1NOfsl4pX+nwC65a1uLnkK9TSuVTOhaQ4cBOzvtDcZXU5Bdl28SrF9HqrZJhwD7O/VsZpi7xSz7pXW6ahQ1/dB/RrYf2QhLBmr1lNINVRZfw9BBwArc4SszGlWWd2fxB9cFvJQYKnUUWAgV22y5v1e/ffHpiOAqMLCiOpymwNGtxvk9s8mfwcU2CiydqvJbdKuSX0K8a/KHQDsMQkyeVbtISFif8mRcfwRtF8F/l3/O+s/AQAA///lM0dZSaTeTQAAAABJRU5ErkJggg=='
                             example:
@@ -821,7 +821,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'QRCode': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEw0lEQVR42uyZPa7zqhaGX0ThLmsCkZlGCktMKaU76FxmSkgUmQZWJkA6CuT3avlLvrNvvRMX9x6KXWQ/UhCsn2cR/Lv+v5YhudQ6njEs1bBjqGYDwlJJpoOAArtUbK4Pi5jN3qPAlCkstcAeBazMUaoj78RpxGW4yWYzWVfmzwFLlLX4O+VkkucN5tFDOxiIAvfoA/X4uVQ4sgUcCBTYCG7AEGGKvbdrBabQ8OOyvg3ovm4ynqfLXJ9rvi+303ie5vm/gvZXgK6BLC7fo5hiG4KwW7b6I/2+DJi1+ybVFQyx6o6bbKPVDCyjTwcBZB9uevBtAEafhiosCFH/4kNA8i1gg02B3KxezGbzEjUCDgIwYppR3SNdgtY3H0M1j8xFzCscvg/8uQvZAB9piidv1RXfZhbHdAwAlzsCNCaJDdMF4WQeeSGACZ8BMNl4FZYJA7j2YalPPhhngetHAaZPcyBg2wyYdAk0fKQ5yPja5PcBzTZW4uxJ2bTGwmxnu/BH4vwSgEsYItcCH+VZJt/AYhmHatbXdX8d2JvaTVzxCVW2aVhqheXSqvnR9b4L6AoUx3zX+jZd5rDB5jbLuv0txd8GRs+liuv+TsKloQWujxxRYf5s8gOA7fMVK9PQuDtMNCx2ibIdCMCy1s0yQU6Od9bqim1BuzoOAgzTHOiKv0d5Mt+XClN8DBxN/wxg2G2DbDYNJExCqE+Ne8poXoLxdUA/w5VrnxBQ9fjlqaJMwWgPAzLjtfKRW4A21ojnStX0dX2d5PeB0fawu2pChcuM4bk+tLmbMn0GMJslb5ptDXySbb5W1+0SyVcJOgRIQxSc7X0RUSvGs2DSeaz4gwCMNi/7XNACZc0KbPBtruv2KQA+DVFladBvt4xywhmh1Xd2fx8wzGTUltqCWrHWgqL7Jg8E0hSiFJfbUJ/Fpx3L1OHsVR8+APgoZMclUKvcft2+zTBrwjHArosim4ZcfW4Y4lVWnYXg2A8C9C5aEFXDoEJzmXFyfZoH/p0Wvw7oXoZbNQ823ase1wk2DQ3u7XK/BkzOqovwpM68Ko+jUyPFu6F8H4DvqsAuaUMZJ6+azjTPdS32KMBkLnpQ3VPnbsZgiktALW91/wDQEV5V7gT4JT6L62GRzeV0EDDC7rVFax2ZW6Aa6V5h/FEAgBlSbLrMVScU1s09+jxwG/9q87cB/Yxw3acBsk2Yw+nPf9Y1p88ARlNPtvPkF3LlPQYp8MtSx/FtpF8H4DNrZd8fOtTOxJSzXdo/c/fXAbN2DLeKs1dxHeEZZVWaju/3h18CcDk3qePZpllglDZ89MCq8nIQoDPAVaPi3iAFFwS1xjjr+HcYwD+hri216vBZzQbbZsE44RhAp+sQxfTpApGCoV1NOfsl4pX+nwC65a1uLnkK9TSuVTOhaQ4cBOzvtDcZXU5Bdl28SrF9HqrZJhwD7O/VsZpi7xSz7pXW6ahQ1/dB/RrYf2QhLBmr1lNINVRZfw9BBwArc4SszGlWWd2fxB9cFvJQYKnUUWAgV22y5v1e/ffHpiOAqMLCiOpymwNGtxvk9s8mfwcU2CiydqvJbdKuSX0K8a/KHQDsMQkyeVbtISFif8mRcfwRtF8F/l3/O+s/AQAA///lM0dZSaTeTQAAAABJRU5ErkJggg==',
+                                            'qrcode': 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQAAAAEAAQMAAABmvDolAAAABlBMVEX///8AAABVwtN+AAAEw0lEQVR42uyZPa7zqhaGX0ThLmsCkZlGCktMKaU76FxmSkgUmQZWJkA6CuT3avlLvrNvvRMX9x6KXWQ/UhCsn2cR/Lv+v5YhudQ6njEs1bBjqGYDwlJJpoOAArtUbK4Pi5jN3qPAlCkstcAeBazMUaoj78RpxGW4yWYzWVfmzwFLlLX4O+VkkucN5tFDOxiIAvfoA/X4uVQ4sgUcCBTYCG7AEGGKvbdrBabQ8OOyvg3ovm4ynqfLXJ9rvi+303ie5vm/gvZXgK6BLC7fo5hiG4KwW7b6I/2+DJi1+ybVFQyx6o6bbKPVDCyjTwcBZB9uevBtAEafhiosCFH/4kNA8i1gg02B3KxezGbzEjUCDgIwYppR3SNdgtY3H0M1j8xFzCscvg/8uQvZAB9piidv1RXfZhbHdAwAlzsCNCaJDdMF4WQeeSGACZ8BMNl4FZYJA7j2YalPPhhngetHAaZPcyBg2wyYdAk0fKQ5yPja5PcBzTZW4uxJ2bTGwmxnu/BH4vwSgEsYItcCH+VZJt/AYhmHatbXdX8d2JvaTVzxCVW2aVhqheXSqvnR9b4L6AoUx3zX+jZd5rDB5jbLuv0txd8GRs+liuv+TsKloQWujxxRYf5s8gOA7fMVK9PQuDtMNCx2ibIdCMCy1s0yQU6Od9bqim1BuzoOAgzTHOiKv0d5Mt+XClN8DBxN/wxg2G2DbDYNJExCqE+Ne8poXoLxdUA/w5VrnxBQ9fjlqaJMwWgPAzLjtfKRW4A21ojnStX0dX2d5PeB0fawu2pChcuM4bk+tLmbMn0GMJslb5ptDXySbb5W1+0SyVcJOgRIQxSc7X0RUSvGs2DSeaz4gwCMNi/7XNACZc0KbPBtruv2KQA+DVFladBvt4xywhmh1Xd2fx8wzGTUltqCWrHWgqL7Jg8E0hSiFJfbUJ/Fpx3L1OHsVR8+APgoZMclUKvcft2+zTBrwjHArosim4ZcfW4Y4lVWnYXg2A8C9C5aEFXDoEJzmXFyfZoH/p0Wvw7oXoZbNQ823ase1wk2DQ3u7XK/BkzOqovwpM68Ko+jUyPFu6F8H4DvqsAuaUMZJ6+azjTPdS32KMBkLnpQ3VPnbsZgiktALW91/wDQEV5V7gT4JT6L62GRzeV0EDDC7rVFax2ZW6Aa6V5h/FEAgBlSbLrMVScU1s09+jxwG/9q87cB/Yxw3acBsk2Yw+nPf9Y1p88ARlNPtvPkF3LlPQYp8MtSx/FtpF8H4DNrZd8fOtTOxJSzXdo/c/fXAbN2DLeKs1dxHeEZZVWaju/3h18CcDk3qePZpllglDZ89MCq8nIQoDPAVaPi3iAFFwS1xjjr+HcYwD+hri216vBZzQbbZsE44RhAp+sQxfTpApGCoV1NOfsl4pX+nwC65a1uLnkK9TSuVTOhaQ4cBOzvtDcZXU5Bdl28SrF9HqrZJhwD7O/VsZpi7xSz7pXW6ahQ1/dB/RrYf2QhLBmr1lNINVRZfw9BBwArc4SszGlWWd2fxB9cFvJQYKnUUWAgV22y5v1e/ffHpiOAqMLCiOpymwNGtxvk9s8mfwcU2CiydqvJbdKuSX0K8a/KHQDsMQkyeVbtISFif8mRcfwRtF8F/l3/O+s/AQAA///lM0dZSaTeTQAAAABJRU5ErkJggg==',
                                         },
                                     'success': true,
                                 }
@@ -859,10 +859,10 @@ paths:
                             schema:
                                 type: object
                                 properties:
-                                    Details:
+                                    details:
                                         type: string
                                         example: Proxy configured successfully
-                                    ProxyURL:
+                                    proxy_url:
                                         type: string
                                         example: socks5://user:pass@host:port
                 '400':
@@ -903,10 +903,10 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'S3 configuration saved successfully'
-                                            Enabled:
+                                            enabled:
                                                 type: boolean
                                                 example: true
                             example:
@@ -914,8 +914,8 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'S3 configuration saved successfully',
-                                            'Enabled': true,
+                                            'details': 'S3 configuration saved successfully',
+                                            'enabled': true,
                                         },
                                     'success': true,
                                 }
@@ -1017,7 +1017,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'S3 configuration deleted successfully'
                             example:
@@ -1025,7 +1025,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'S3 configuration deleted successfully',
+                                            'details': 'S3 configuration deleted successfully',
                                         },
                                     'success': true,
                                 }
@@ -1056,13 +1056,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'S3 connection test successful'
-                                            Bucket:
+                                            bucket:
                                                 type: string
                                                 example: 'my-bucket'
-                                            Region:
+                                            region:
                                                 type: string
                                                 example: 'us-east-1'
                             example:
@@ -1070,9 +1070,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'S3 connection test successful',
-                                            'Bucket': 'my-bucket',
-                                            'Region': 'us-east-1',
+                                            'details': 'S3 connection test successful',
+                                            'bucket': 'my-bucket',
+                                            'region': 'us-east-1',
                                         },
                                     'success': true,
                                 }
@@ -1105,7 +1105,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'History sync requested successfully'
                             example:
@@ -1113,7 +1113,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'History sync requested successfully',
+                                            'details': 'History sync requested successfully',
                                         },
                                     'success': true,
                                 }
@@ -1162,7 +1162,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'History sync configuration updated successfully'
                             example:
@@ -1170,7 +1170,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'History sync configuration updated successfully',
+                                            'details': 'History sync configuration updated successfully',
                                         },
                                     'success': true,
                                 }
@@ -1363,7 +1363,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Presence set successfuly'
                             example:
@@ -1371,7 +1371,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Presence set successfuly',
+                                            'details': 'Presence set successfuly',
                                         },
                                     'success': true,
                                 }
@@ -1540,13 +1540,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Message deleted'
                             example:
                                 {
                                     'code': 200,
-                                    'data': { 'Details': 'Message deleted' },
+                                    'data': { 'details': 'Message deleted' },
                                     'success': true,
                                 }
     /chat/markread:
@@ -1581,7 +1581,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Message(s) marked as read'
                             example:
@@ -1589,7 +1589,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Message(s) marked as read',
+                                            'details': 'Message(s) marked as read',
                                         },
                                     'success': true,
                                 }
@@ -1625,13 +1625,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '3EB06F9067F80BAB89FF'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-05-10T12:49:08-03:00'
                             example:
@@ -1639,9 +1639,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '3EB06F9067F80BAB89FF',
-                                            'Timestamp': '2022-05-10T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '3EB06F9067F80BAB89FF',
+                                            'timestamp': '2022-05-10T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -1677,13 +1677,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -1691,9 +1691,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -1742,7 +1742,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: Message updated
                                     success:
@@ -1796,13 +1796,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -1810,9 +1810,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -1848,13 +1848,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -1862,9 +1862,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -1900,13 +1900,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -1914,9 +1914,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -1952,13 +1952,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -1966,9 +1966,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -2004,13 +2004,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -2018,9 +2018,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -2056,13 +2056,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -2070,9 +2070,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -2108,13 +2108,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -2122,9 +2122,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -2159,13 +2159,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -2173,9 +2173,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -2210,13 +2210,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -2224,9 +2224,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -2261,13 +2261,13 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Sent'
-                                            Id:
+                                            id:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
-                                            Timestamp:
+                                            timestamp:
                                                 type: string
                                                 example: '2022-04-20T12:49:08-03:00'
                             example:
@@ -2275,9 +2275,9 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Sent',
-                                            'Id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
-                                            'Timestamp': '2022-04-20T12:49:08-03:00',
+                                            'details': 'Sent',
+                                            'id': '90B2F8B13FAC8A9CF6B06E99C7834DC5',
+                                            'timestamp': '2022-04-20T12:49:08-03:00',
                                         },
                                     'success': true,
                                 }
@@ -2504,7 +2504,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Chat presence set successfuly'
                             example:
@@ -2512,7 +2512,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Chat presence set successfuly',
+                                            'details': 'Chat presence set successfuly',
                                         },
                                     'success': true,
                                 }
@@ -2760,7 +2760,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Group locked setting updated successfully'
                             example:
@@ -2768,7 +2768,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Group locked setting updated successfully',
+                                            'details': 'Group locked setting updated successfully',
                                         },
                                     'success': true,
                                 }
@@ -2803,7 +2803,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Disappearing timer set successfully'
                             example:
@@ -2811,7 +2811,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Disappearing timer set successfully',
+                                            'details': 'Disappearing timer set successfully',
                                         },
                                     'success': true,
                                 }
@@ -2846,7 +2846,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Group photo removed successfully'
                             example:
@@ -2854,7 +2854,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Group photo removed successfully',
+                                            'details': 'Group photo removed successfully',
                                         },
                                     'success': true,
                                 }
@@ -3216,10 +3216,10 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Group Photo set successfully'
-                                            PictureID:
+                                            picture_id:
                                                 type: string
                                                 example: '1222332123'
                             example:
@@ -3227,8 +3227,8 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Group Photo set successfully',
-                                            'PictureID': '1222332123',
+                                            'details': 'Group Photo set successfully',
+                                            'picture_id': '1222332123',
                                         },
                                     'success': true,
                                 }
@@ -3263,7 +3263,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Left group successfully'
                             example:
@@ -3271,7 +3271,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Left group successfully',
+                                            'details': 'Left group successfully',
                                         },
                                     'success': true,
                                 }
@@ -3306,7 +3306,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Group Name set successfully'
                             example:
@@ -3314,7 +3314,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Group Name set successfully',
+                                            'details': 'Group Name set successfully',
                                         },
                                     'success': true,
                                 }
@@ -3349,7 +3349,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Group Topic set successfully'
                             example:
@@ -3357,7 +3357,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Group Topic set successfully',
+                                            'details': 'Group Topic set successfully',
                                         },
                                     'success': true,
                                 }
@@ -3392,7 +3392,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Group Announce mode set successfully'
                             example:
@@ -3400,7 +3400,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Group Announce mode set successfully',
+                                            'details': 'Group Announce mode set successfully',
                                         },
                                     'success': true,
                                 }
@@ -3435,7 +3435,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Joined group successfully'
                             example:
@@ -3443,7 +3443,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Joined group successfully',
+                                            'details': 'Joined group successfully',
                                         },
                                     'success': true,
                                 }
@@ -3531,7 +3531,7 @@ paths:
                                     data:
                                         type: object
                                         properties:
-                                            Details:
+                                            details:
                                                 type: string
                                                 example: 'Participants updated successfully'
                             example:
@@ -3539,7 +3539,7 @@ paths:
                                     'code': 200,
                                     'data':
                                         {
-                                            'Details': 'Participants updated successfully',
+                                            'details': 'Participants updated successfully',
                                         },
                                     'success': true,
                                 }
@@ -4298,7 +4298,7 @@ components:
             required:
                 - WebhookURL
             properties:
-                WebhookURL:
+                webhook:
                     type: string
                     example: http://server/webhook
 

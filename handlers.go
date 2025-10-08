@@ -237,7 +237,7 @@ func (s *server) Disconnect() http.HandlerFunc {
 			v := updateUserInfo(r.Context().Value("userinfo"), "Events", "")
 			userinfocache.Set(token, v, cache.NoExpiration)
 
-			response := map[string]interface{}{"Details": "Disconnected"}
+			response := map[string]interface{}{"details": "Disconnected"}
 			responseJson, err := json.Marshal(response)
 
 			clientManager.DeleteWhatsmeowClient(txtid) // mameluco
@@ -320,7 +320,7 @@ func (s *server) DeleteWebhook() http.HandlerFunc {
 		v = updateUserInfo(v, "Events", "")
 		userinfocache.Set(token, v, cache.NoExpiration)
 
-		response := map[string]interface{}{"Details": "Webhook and events deleted successfully"}
+		response := map[string]interface{}{"details": "Webhook and events deleted successfully"}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -510,7 +510,7 @@ func (s *server) GetQR() http.HandlerFunc {
 		}
 
 		log.Info().Str("instance", txtid).Str("qrcode", code).Msg("Get QR successful")
-		response := map[string]interface{}{"QRCode": fmt.Sprintf("%s", code)}
+		response := map[string]interface{}{"qrcode": fmt.Sprintf("%s", code)}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -557,7 +557,7 @@ func (s *server) Logout() http.HandlerFunc {
 			}
 		}
 
-		response := map[string]interface{}{"Details": "Logged out"}
+		response := map[string]interface{}{"details": "Logged out"}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -611,7 +611,7 @@ func (s *server) PairPhone() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"LinkingCode": linkingCode}
+		response := map[string]interface{}{"linking_code": linkingCode}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -828,7 +828,7 @@ func (s *server) SendDocument() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "document", t.Caption, "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -953,7 +953,7 @@ func (s *server) SendAudio() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "audio", "", "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -1130,7 +1130,7 @@ func (s *server) SendImage() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "image", t.Caption, "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -1257,7 +1257,7 @@ func (s *server) SendSticker() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "sticker", "", "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -1406,7 +1406,7 @@ func (s *server) SendVideo() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "video", t.Caption, "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -1503,7 +1503,7 @@ func (s *server) SendContact() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "contact", t.Name, "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -1602,7 +1602,7 @@ func (s *server) SendLocation() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "location", t.Name, "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -1706,7 +1706,7 @@ func (s *server) SendButtons() http.HandlerFunc {
 		}
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -1855,9 +1855,9 @@ func (s *server) SendList() http.HandlerFunc {
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message list sent")
 		response := map[string]interface{}{
-			"Details":   "Sent",
-			"Timestamp": resp.Timestamp,
-			"Id":        msgid,
+			"details":   "Sent",
+			"timestamp": resp.Timestamp,
+			"id":        msgid,
 		}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
@@ -1952,7 +1952,7 @@ func (s *server) SendMessage() http.HandlerFunc {
 		s.saveOutgoingMessageToHistory(txtid, recipient.String(), msgid, "text", t.Body, "", historyLimit)
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -2027,7 +2027,7 @@ func (s *server) SendPoll() http.HandlerFunc {
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Poll sent")
 
-		response := map[string]interface{}{"Details": "Poll sent successfully", "Id": msgid}
+		response := map[string]interface{}{"details": "Poll sent successfully", "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -2090,7 +2090,7 @@ func (s *server) DeleteMessage() http.HandlerFunc {
 		}
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message deleted")
-		response := map[string]interface{}{"Details": "Deleted", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Deleted", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -2183,7 +2183,7 @@ func (s *server) SendEditMessage() http.HandlerFunc {
 		}
 
 		log.Info().Str("timestamp", fmt.Sprintf("%d", resp.Timestamp.Unix())).Str("id", msgid).Msg("Message edit sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -2237,7 +2237,7 @@ func (s *server) RequestHistorySync() http.HandlerFunc {
 		}
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Msg("History sync request sent")
-		response := map[string]interface{}{"Details": "History sync request Sent", "Timestamp": resp.Timestamp.Unix()}
+		response := map[string]interface{}{"details": "History sync request Sent", "timestamp": resp.Timestamp.Unix()}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -2397,7 +2397,7 @@ func (s *server) SendTemplate() http.HandlerFunc {
 		}
 
 		log.Info().Str("timestamp", fmt.Sprintf("%d", resp.Timestamp.Unix())).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -2586,7 +2586,7 @@ func (s *server) SendPresence() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Presence set successfuly"}
+		response := map[string]interface{}{"details": "Presence set successfuly"}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -2743,7 +2743,7 @@ func (s *server) ChatPresence() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Chat presence set successfuly"}
+		response := map[string]interface{}{"details": "Chat presence set successfuly"}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -3153,7 +3153,7 @@ func (s *server) React() http.HandlerFunc {
 		}
 
 		log.Info().Str("timestamp", fmt.Sprintf("%v", resp.Timestamp)).Str("id", msgid).Msg("Message sent")
-		response := map[string]interface{}{"Details": "Sent", "Timestamp": resp.Timestamp.Unix(), "Id": msgid}
+		response := map[string]interface{}{"details": "Sent", "timestamp": resp.Timestamp.Unix(), "id": msgid}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -3207,7 +3207,7 @@ func (s *server) MarkRead() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Message(s) marked as read"}
+		response := map[string]interface{}{"details": "Message(s) marked as read"}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
@@ -3411,7 +3411,7 @@ func (s *server) GroupJoin() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group joined successfully"}
+		response := map[string]interface{}{"details": "Group joined successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -3536,7 +3536,7 @@ func (s *server) SetGroupLocked() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group Locked setting updated successfully"}
+		response := map[string]interface{}{"details": "Group Locked setting updated successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -3609,7 +3609,7 @@ func (s *server) SetDisappearingTimer() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Disappearing timer set successfully"}
+		response := map[string]interface{}{"details": "Disappearing timer set successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -3661,7 +3661,7 @@ func (s *server) RemoveGroupPhoto() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group Photo removed successfully"}
+		response := map[string]interface{}{"details": "Group Photo removed successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -3752,7 +3752,7 @@ func (s *server) UpdateGroupParticipants() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group Participants updated successfully"}
+		response := map[string]interface{}{"details": "Group Participants updated successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -3888,7 +3888,7 @@ func (s *server) SetGroupPhoto() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group Photo set successfully", "PictureID": picture_id}
+		response := map[string]interface{}{"details": "Group Photo set successfully", "picture_id": picture_id}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -3946,7 +3946,7 @@ func (s *server) SetGroupName() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group Name set successfully"}
+		response := map[string]interface{}{"details": "Group Name set successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -4004,7 +4004,7 @@ func (s *server) SetGroupTopic() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group Topic set successfully"}
+		response := map[string]interface{}{"details": "Group Topic set successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -4056,7 +4056,7 @@ func (s *server) GroupLeave() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group left successfully"}
+		response := map[string]interface{}{"details": "Group left successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -4109,7 +4109,7 @@ func (s *server) SetGroupAnnounce() http.HandlerFunc {
 			return
 		}
 
-		response := map[string]interface{}{"Details": "Group Announce set successfully"}
+		response := map[string]interface{}{"details": "Group Announce set successfully"}
 		responseJson, err := json.Marshal(response)
 
 		if err != nil {
@@ -4932,8 +4932,8 @@ func (s *server) SetHistory() http.HandlerFunc {
 		}
 
 		response := map[string]interface{}{
-			"Details": "History configured successfully",
-			"History": t.History,
+			"details": "History configured successfully",
+			"history": t.History,
 		}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
@@ -4986,7 +4986,7 @@ func (s *server) SetProxy() http.HandlerFunc {
 				log.Info().Str("userID", txtid).Msg("User info cache updated with Proxy configuration")
 			}
 
-			response := map[string]interface{}{"Details": "Proxy disabled successfully"}
+			response := map[string]interface{}{"details": "Proxy disabled successfully"}
 			responseJson, err := json.Marshal(response)
 			if err != nil {
 				s.Respond(w, r, http.StatusInternalServerError, err)
@@ -5031,8 +5031,8 @@ func (s *server) SetProxy() http.HandlerFunc {
 		}
 
 		response := map[string]interface{}{
-			"Details":  "Proxy configured successfully",
-			"ProxyURL": t.ProxyURL,
+			"details":  "Proxy configured successfully",
+			"proxy_url": t.ProxyURL,
 		}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
@@ -5146,8 +5146,8 @@ func (s *server) ConfigureS3() http.HandlerFunc {
 		}
 
 		response := map[string]interface{}{
-			"Details": "S3 configuration saved successfully",
-			"Enabled": t.Enabled,
+			"details": "S3 configuration saved successfully",
+			"enabled": t.Enabled,
 		}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
@@ -5282,9 +5282,9 @@ func (s *server) TestS3Connection() http.HandlerFunc {
 		}
 
 		response := map[string]interface{}{
-			"Details": "S3 connection test successful",
-			"Bucket":  config.Bucket,
-			"Region":  config.Region,
+			"details": "S3 connection test successful",
+			"bucket":  config.Bucket,
+			"region":  config.Region,
 		}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
@@ -5323,7 +5323,7 @@ func (s *server) DeleteS3Config() http.HandlerFunc {
 		// Remove S3 client
 		GetS3Manager().RemoveClient(txtid)
 
-		response := map[string]interface{}{"Details": "S3 configuration deleted successfully"}
+		response := map[string]interface{}{"details": "S3 configuration deleted successfully"}
 		responseJson, err := json.Marshal(response)
 		if err != nil {
 			s.Respond(w, r, http.StatusInternalServerError, err)
