@@ -137,30 +137,42 @@ paths:
                                         type: boolean
                                         example: true
                                     data:
-                                        $ref: '#/components/schemas/User'
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/User'
                             example:
-                                code: 200
-                                success: true
-                                data:
-                                    id: '4e4942c7dee1deef99ab8fd9f7350de5'
-                                    name: 'John Doe'
-                                    token: '1234ABCD'
-                                    webhook: 'https://webhook.site/1234567890'
-                                    events: 'All'
-                                    expiration: 0
-                                    proxy_config:
-                                        enabled: true
-                                        proxy_url: 'https://serverproxy.com:9080'
-                                    s3_config:
-                                        enabled: true
-                                        endpoint: 'https://s3.amazonaws.com'
-                                        region: 'us-east-1'
-                                        bucket: 'my-bucket'
-                                        access_key: '***'
-                                        path_style: true
-                                        public_url: 'https://s3.amazonaws.com'
-                                        media_delivery: 'both'
-                                        retention_days: 30
+                                {
+                                    'code': 200,
+                                    'success': true,
+                                    'data':
+                                        [
+                                            {
+                                                'id': '4e4942c7dee1deef99ab8fd9f7350de5',
+                                                'name': 'John Doe',
+                                                'token': '1234ABCD',
+                                                'webhook': 'https://webhook.site/1234567890',
+                                                'events': 'All',
+                                                'expiration': 0,
+                                                'proxy_config':
+                                                    {
+                                                        'enabled': true,
+                                                        'proxy_url': 'https://serverproxy.com:9080',
+                                                    },
+                                                's3_config':
+                                                    {
+                                                        'enabled': true,
+                                                        'endpoint': 'https://s3.amazonaws.com',
+                                                        'region': 'us-east-1',
+                                                        'bucket': 'my-bucket',
+                                                        'access_key': '***',
+                                                        'path_style': true,
+                                                        'public_url': 'https://s3.amazonaws.com',
+                                                        'media_delivery': 'both',
+                                                        'retention_days': 30,
+                                                    },
+                                            },
+                                        ],
+                                }
         put:
             tags:
                 - Admin
