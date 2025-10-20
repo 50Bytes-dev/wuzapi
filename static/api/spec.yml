@@ -1766,8 +1766,8 @@ paths:
                                                 type: string
                                                 example: '90B2F8B13FAC8A9CF6B06E99C7834DC5'
                                             timestamp:
-                                                type: string
-                                                example: '2022-04-20T12:49:08-03:00'
+                                                type: integer
+                                                example: 1718803748
                             example:
                                 {
                                     'code': 200,
