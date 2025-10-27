@@ -44,6 +44,12 @@ go mod tidy
 go build .
 ```
 
+## Docker building
+
+```
+docker build --platform <linux/amd64|arm64> -t <NAME> .
+```
+
 ## Run
 
 By default it will start a REST service in port 8080. These are the parameters
