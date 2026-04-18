@@ -630,7 +630,6 @@ func (s *server) startClient(userID string, textjid string, token string, subscr
 				log.Error().Err(dbErr).Msg("Failed to update user status after connection error")
 			}
 
-			// Use the existing mycli instance from outer scope
 			postmap := make(map[string]interface{})
 			postmap["event"] = "ConnectFailure"
 			postmap["error"] = lastErr.Error()
